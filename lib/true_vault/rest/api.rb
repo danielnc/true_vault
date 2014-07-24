@@ -58,6 +58,35 @@ module TrueVault
 
         schema_id = schema.present? ? schema.id : nil
 
+        if options.delete(:case_insensitive)
+          fields.each do |k, v|
+            fields[k] = if v.kind_of?(Hash)
+                          v.merge(case_sensitive: false)
+                        else
+                          {
+                            value: v,
+                            case_sensitive: false
+                          }
+                        end
+          end
+        end
+
+        fields.each do |k, v|
+          if v.kind_of?(Hash)
+            if v[:starts_with] && v[:ends_with]
+              raise TrueVault::Error::WrongFilterValues.new("You can only use \"starts_with\" OR \"ends_with\". Can't have both values on a single field ")
+            elsif v[:starts_with] || v[:ends_with]
+              v.merge!(type: "wildcard")
+
+              if v.delete(:starts_with) && v[:value].index("*").nil?
+                v[:value] = "#{v[:value]}*"
+              elsif v.delete(:ends_with) && v[:value].index("*").nil?
+                v[:value] = "*#{v[:value]}"
+              end
+            end
+          end
+        end
+
         search_options = {
           filter: fields
         }

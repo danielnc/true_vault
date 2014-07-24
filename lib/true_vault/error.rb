@@ -4,6 +4,7 @@ module TrueVault
     class MissingSchema < self; end
     class ClientError < self; end
     class RequestTimeout < self; end
+    class WrongFilterValues < self; end
 
     def from_response(response)
       message, code = parse_error(response.body)
