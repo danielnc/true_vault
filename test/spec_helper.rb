@@ -41,6 +41,19 @@ class Patient < ActiveRecord::Base
       income: { index: false },
       latitude: { index: true },
       longitude: { index: true },
-      created_at: { index: true }
+      created_at: { index: true },
+      full_name: { index: true, type: :string},
+      age: { type: :integer },
     }
+
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
+
+  def age
+    if self.birth_date.present?
+      now = Time.now.utc.to_date
+      now.year - self.birth_date.year - ((now.month > self.birth_date.month || (now.month == self.birth_date.month && now.day >= self.birth_date.day)) ? 0 : 1)
+    end
+  end
 end

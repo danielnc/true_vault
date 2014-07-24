@@ -1,10 +1,11 @@
 require_relative 'rest/api'
 module TrueVault
   class Model
-    attr_reader :attributes, :options
-    def initialize(attributes, options)
-      @attributes = attributes
-      @options = options
+    attr_reader :model, :true_vault_index, :options
+    def initialize(model)
+      @model = model
+      @true_vault_index = model.class.true_vault_index
+      @options = model.true_vault_options
     end
 
     def create!
@@ -30,13 +31,13 @@ module TrueVault
     protected
     def get_true_vault_schema_attributes
       klazz = options[:klazz]
-      Hash[attributes.slice(*klazz.true_vault_index.schema_fields).map do |field, value|
-        [field, format_value(klazz.columns_hash[field.to_s].type, value)]
+      Hash[true_vault_index.options[:fields].map do |field, options|
+        [field, format_value(options[:type], model.send(field))]
       end]
     end
 
     def format_value(type, value)
-      return value if value.nil?
+      return value if value.blank?
 
       case type
       when :date, :datetime, :time

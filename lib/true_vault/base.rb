@@ -8,9 +8,8 @@ module TrueVault
     def true_vault(options = {})
       raise "Only call true_vault once per model" if respond_to?(:true_vault_index)
 
-      validate_options(options)
       class_eval do
-        cattr_reader :true_vault_options, :true_vault_klass
+        cattr_reader :true_vault_options
 
         class_variable_set :@@true_vault_options, HashWithIndifferentAccess.new(options.dup.merge({
           klazz: self,
@@ -21,10 +20,6 @@ module TrueVault
         def self.true_vault_index
           Index.new(true_vault_options)
         end
-
-        # extend Searchkick::Search
-        # extend Searchkick::Reindex
-        # include Searchkick::Similar
 
         before_create { @true_vault_new_record = true }
         if respond_to?(:after_commit)
@@ -65,19 +60,11 @@ module TrueVault
             self.find_by_document_id(document_id)
           end.compact
         end
+
         private
         def true_vault_model
-          Model.new(self.attributes, true_vault_options)
+          Model.new(self)
         end
-
-      end
-    end
-
-    private
-    def validate_options(options)
-      raise TrueVault::Error::MissingField.new("Missing mandatory parameter fields or fields must be an Array") if options[:fields].nil? || !options[:fields].kind_of?(Hash)
-      options[:fields].each do |field, options|
-        raise TrueVault::Error::MissingField.new("#{field} is not a column of #{self.name}") if self.send(:columns_hash)[field.to_s].nil?
       end
     end
   end

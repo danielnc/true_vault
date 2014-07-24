@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    true_vault (0.1)
+    true_vault (0.2)
       activemodel
       faraday
       faraday_middleware

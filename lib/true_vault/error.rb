@@ -1,6 +1,8 @@
 module TrueVault
   class Error < StandardError
     class MissingField < self; end
+    class MissingVirtualFieldType < self; end
+    class WrongVirtualFieldType < self; end
     class MissingSchema < self; end
     class ClientError < self; end
     class RequestTimeout < self; end

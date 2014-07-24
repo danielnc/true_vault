@@ -72,19 +72,7 @@ module TrueVault
         end
 
         fields.each do |k, v|
-          if v.kind_of?(Hash)
-            if v[:starts_with] && v[:ends_with]
-              raise TrueVault::Error::WrongFilterValues.new("You can only use \"starts_with\" OR \"ends_with\". Can't have both values on a single field ")
-            elsif v[:starts_with] || v[:ends_with]
-              v.merge!(type: "wildcard")
-
-              if v.delete(:starts_with) && v[:value].index("*").nil?
-                v[:value] = "#{v[:value]}*"
-              elsif v.delete(:ends_with) && v[:value].index("*").nil?
-                v[:value] = "*#{v[:value]}"
-              end
-            end
-          end
+          v.merge!(type: "wildcard") && v.delete(:wildcard) if v.kind_of?(Hash) && v[:wildcard].present?
         end
 
         search_options = {
