@@ -14,7 +14,7 @@ module TrueVault
       @results ||= begin
         response.data.documents.map do |document_id|
           klazz.find_by_true_vault_document_id(document_id)
-        end#.compact
+        end.compact
       end
     end
 
