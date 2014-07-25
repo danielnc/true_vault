@@ -100,12 +100,10 @@ module TrueVault
         body = connection.send(method.to_sym, "/#{api_version}/vaults/#{vault_id}/#{path}", params).env.body
         # do not response load
         return body if do_not_force_load
-
         Response.load(body)
       rescue Faraday::Error::TimeoutError, Timeout::Error => error
         raise(TrueVault::Error::RequestTimeout.new(error))
       rescue Faraday::Error::ClientError, JSON::ParserError => error
-        puts error.response
         raise(TrueVault::Error.new(error))
       end
     end

@@ -1,4 +1,5 @@
 require_relative 'rest/api'
+require_relative 'results'
 module TrueVault
   class Model
     attr_reader :model, :true_vault_index, :options
@@ -13,19 +14,25 @@ module TrueVault
     end
 
     def delete!
-      api.destroy_schema_by_name(options[:index_name])
+      api.delete_document(options[:index_name], model.true_vault_document_id)
     end
 
     def update!
-      api.update_schema(options[:index_name], get_true_vault_schema_attributes)
+      api.update_document(options[:index_name], model.true_vault_document_id, get_true_vault_schema_attributes)
     end
 
     def exists?
-      api.find_schema_by_name(options[:index_name]).present?
+      begin
+        api.get_document(model.true_vault_document_id)
+        true
+      rescue TrueVault::Error
+        return false if $!.response[:status] == 404
+        raise $!
+      end
     end
 
-    def self.search(index_name, filters, search_options={})
-      api.search(index_name, filters, search_options).data.documents
+    def self.search(klazz, index_name, filters, search_options={})
+      Results.new(klazz, api.search(index_name, filters, search_options))
     end
 
     protected

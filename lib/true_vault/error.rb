@@ -8,8 +8,12 @@ module TrueVault
     class RequestTimeout < self; end
     class WrongFilterValues < self; end
 
-    def from_response(response)
-      message, code = parse_error(response.body)
+    def response
+      self.cause.response
+    end
+
+    def from_response
+      message, code = parse_error(self.response.body)
       new(message, response.response_headers, code)
     end
 

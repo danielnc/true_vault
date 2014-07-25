@@ -53,6 +53,16 @@ module TrueVault
         TrueVault.client.post("documents", schema_id: schema.id, document: Base64.strict_encode64(attributes.to_json))
       end
 
+      def self.update_document(index_name, document_id, attributes)
+        schema = self.find_schema_by_name(index_name)
+        TrueVault.client.put("documents/#{document_id}", schema_id: schema.id, document: Base64.strict_encode64(attributes.to_json))
+      end
+
+      def self.delete_document(index_name, document_id)
+        schema = self.find_schema_by_name(index_name)
+        TrueVault.client.delete("documents/#{document_id}", schema_id: schema.id)
+      end
+
       def self.search(schema_name, fields, options=nil)
         schema = self.find_schema_by_name(schema_name)
 

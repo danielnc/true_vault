@@ -42,9 +42,8 @@ module TrueVault
         end
 
         def true_vault_reindex(force=false)
-          if destroyed?
-            raise "Not Implemented"
-            self.remove_true_vault_document(force)
+          if self.destroyed?
+            self.remove_true_vault_document
           else
             self.store_true_vault_document(force)
           end
@@ -52,14 +51,17 @@ module TrueVault
 
         def store_true_vault_document(force)
           method = @true_vault_new_record || force || self.true_vault_document_id.nil? ? :create! : :update!
-
           self.update_column(:true_vault_document_id, true_vault_model.send(method))
         end
 
+        def remove_true_vault_document
+          true_vault_model.delete!
+        end
+
         def self.true_vault_search(fields, options={})
-          Model.search(true_vault_options[:index_name], fields, options).map do |document_id|
-            self.find_by_true_vault_document_id(document_id)
-          end.compact
+          options = HashWithIndifferentAccess.new(options)
+
+          Model.search(self, true_vault_options[:index_name], fields, options)
         end
 
         private
