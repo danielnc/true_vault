@@ -18,7 +18,7 @@ module TrueVault
     end
 
     def update!
-      api.update_document(options[:index_name], model.true_vault_document_id, get_true_vault_schema_attributes)
+      api.update_document(options[:index_name], model.true_vault_document_id, get_true_vault_schema_attributes).document_id
     end
 
     def exists?
