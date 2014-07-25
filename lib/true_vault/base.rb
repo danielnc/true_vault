@@ -49,8 +49,8 @@ module TrueVault
           end
         end
 
-        def store_true_vault_document(force)
-          method = @true_vault_new_record || force || self.true_vault_document_id.nil? ? :create! : :update!
+        def store_true_vault_document(recreate_true_vault_documents)
+          method = @true_vault_new_record || recreate_true_vault_documents || self.true_vault_document_id.nil? ? :create! : :update!
           self.update_column(:true_vault_document_id, true_vault_model.send(method))
         end
 

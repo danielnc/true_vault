@@ -19,16 +19,16 @@ module TrueVault
     end
 
     def total_count
-      data.info.total_result_count
+      results.data.info.total_result_count
     end
     alias_method :total_entries, :total_count
 
     def current_page
-      data.info.current_page
+      results.data.info.current_page
     end
 
     def per_page
-      data.info.per_page
+      results.data.info.per_page
     end
     alias_method :limit_value, :per_page
 
@@ -52,8 +52,5 @@ module TrueVault
     def last_page?
       next_page.nil?
     end
-
   end
 end
-
-# {"data"=>{"info"=>{"num_pages"=>1, "current_page"=>1, "total_result_count"=>1, "per_page"=>20}, "documents"=>["63e3ef4a-ba52-4e7c-a6bd-3f7ee62a4e98"]}, "result"=>"success", "transaction_id"=>"b4190cf0-774b-4854-8b96-3e789987122f"}
