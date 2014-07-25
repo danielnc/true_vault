@@ -29,19 +29,19 @@ module TrueVault
           after_destroy :reindex, if: proc{ self.class.search_callbacks? }
         end
 
-        def self.enable_search_callbacks
+        def self.true_vault_enable_search_callbacks
           class_variable_set :@@true_vault_callbacks, true
         end
 
-        def self.disable_search_callbacks
+        def self.true_vault_disable_search_callbacks
           class_variable_set :@@true_vault_callbacks, false
         end
 
-        def self.search_callbacks?
+        def self.true_vault_search_callbacks?
           class_variable_get(:@@true_vault_callbacks)
         end
 
-        def reindex
+        def true_vault_reindex
           if destroyed?
             self.remove_true_vault_document
           else
@@ -55,7 +55,7 @@ module TrueVault
           self.update_column(:document_id, true_vault_model.send(method))
         end
 
-        def self.search(fields, options={})
+        def self.true_vault_search(fields, options={})
           Model.search(true_vault_options[:index_name], fields, options).map do |document_id|
             self.find_by_document_id(document_id)
           end.compact
