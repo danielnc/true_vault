@@ -50,7 +50,7 @@ module TrueVault
         end
 
         def store_true_vault_document
-          method = @true_vault_new_record ? :create! : :update!
+          method = @true_vault_new_record || self.document_id.nil? ? :create! : :update!
 
           self.update_column(:document_id, true_vault_model.send(method))
         end
