@@ -17,7 +17,7 @@ module TrueVault
     end
 
     def update!
-      api.update_schema(options[:index_name], fields_to_schema)
+      api.update_schema(options[:index_name], get_true_vault_schema_attributes)
     end
 
     def exists?
