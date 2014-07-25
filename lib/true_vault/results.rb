@@ -19,16 +19,16 @@ module TrueVault
     end
 
     def total_count
-      results.data.info.total_result_count
+      response.data.info.total_result_count
     end
     alias_method :total_entries, :total_count
 
     def current_page
-      results.data.info.current_page
+      response.data.info.current_page
     end
 
     def per_page
-      results.data.info.per_page
+      response.data.info.per_page
     end
     alias_method :limit_value, :per_page
 
