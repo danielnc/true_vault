@@ -50,14 +50,14 @@ module TrueVault
         end
 
         def store_true_vault_document
-          method = @true_vault_new_record || self.document_id.nil? ? :create! : :update!
+          method = @true_vault_new_record || self.true_vault_document_id.nil? ? :create! : :update!
 
-          self.update_column(:document_id, true_vault_model.send(method))
+          self.update_column(:true_vault_document_id, true_vault_model.send(method))
         end
 
         def self.true_vault_search(fields, options={})
           Model.search(true_vault_options[:index_name], fields, options).map do |document_id|
-            self.find_by_document_id(document_id)
+            self.find_by_true_vault_document_id(document_id)
           end.compact
         end
 
