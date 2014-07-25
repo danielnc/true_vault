@@ -32,7 +32,7 @@ module TrueVault
     def get_true_vault_schema_attributes
       klazz = options[:klazz]
       Hash[true_vault_index.options[:fields].map do |field, options|
-        [field, format_value(options[:type], model.send(field))]
+        [field, format_value(options[:type], model.send(field).presence)]
       end]
     end
 
