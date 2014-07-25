@@ -1,21 +1,10 @@
 require "active_model"
 require "hashie"
 require "true_vault/version"
-# require "searchkick/index"
-# require "searchkick/reindex"
-# require "searchkick/results"
-# require "searchkick/query"
-# require "searchkick/search"
-# require "searchkick/similar"
 require "true_vault/rest/client"
 require "true_vault/base"
-# require "searchkick/tasks"
-# require "searchkick/logging" if defined?(Rails)
 
 module TrueVault
-  # class MissingIndexError < StandardError; end
-  # class UnsupportedVersionError < StandardError; end
-
   def self.client
     @client ||= REST::Client.new do |client|
       client.api_key = ENV["TRUE_VAULT_API_KEY"]

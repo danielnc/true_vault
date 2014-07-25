@@ -24,9 +24,9 @@ ActiveRecord::Migration.create_table :patients do |t|
   t.date    :birth_date
   t.boolean :enabled
   t.integer :income
-  t.float :latitude
-  t.float :longitude
-  t.string :document_id
+  t.float   :latitude
+  t.float   :longitude
+  t.string  :true_vault_document_id
   t.timestamps
 end
 

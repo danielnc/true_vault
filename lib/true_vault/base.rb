@@ -23,10 +23,10 @@ module TrueVault
 
         before_create { @true_vault_new_record = true }
         if respond_to?(:after_commit)
-          after_commit :reindex, if: proc{ self.class.search_callbacks? }
+          after_commit :true_vault_reindex, if: proc{ self.class.true_vault_search_callbacks? }
         else
-          after_save :reindex, if: proc{ self.class.search_callbacks? }
-          after_destroy :reindex, if: proc{ self.class.search_callbacks? }
+          after_save :true_vault_reindex, if: proc{ self.class.true_vault_search_callbacks? }
+          after_destroy :true_vault_reindex, if: proc{ self.class.true_vault_search_callbacks? }
         end
 
         def self.true_vault_enable_search_callbacks
@@ -41,16 +41,17 @@ module TrueVault
           class_variable_get(:@@true_vault_callbacks)
         end
 
-        def true_vault_reindex
+        def true_vault_reindex(force=false)
           if destroyed?
-            self.remove_true_vault_document
+            raise "Not Implemented"
+            self.remove_true_vault_document(force)
           else
-            self.store_true_vault_document
+            self.store_true_vault_document(force)
           end
         end
 
-        def store_true_vault_document
-          method = @true_vault_new_record || self.true_vault_document_id.nil? ? :create! : :update!
+        def store_true_vault_document(force)
+          method = @true_vault_new_record || force || self.true_vault_document_id.nil? ? :create! : :update!
 
           self.update_column(:true_vault_document_id, true_vault_model.send(method))
         end

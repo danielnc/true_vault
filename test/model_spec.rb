@@ -19,7 +19,7 @@ describe TrueVault::Model do
 
         # puts Patient.search({last_name: {value: "Last", wildcard: true}}, {sort: {created_at: :asc}, case_insensitive: true}).inspect
         # puts Patient.search({last_name: {value: "ast", ends_with: true}}, {sort: {created_at: :asc}}).inspect
-        puts Patient.search({full_name: {value: "*Last*", wildcard: true}}, {sort: {created_at: :asc}}).inspect
+        puts Patient.true_vault_search({full_name: {value: "*Last*", wildcard: true}}, {sort: {created_at: :asc}}).inspect
       end
     end
   end
