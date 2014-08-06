@@ -34,7 +34,7 @@ class Patient < ActiveRecord::Base
 
   true_vault \
     fields: {
-      first_name: { index: false },
+      first_name: { index: true },
       last_name: { index: true },
       birth_date:  { index: true },
       enabled: { index: false },

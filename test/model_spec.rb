@@ -26,11 +26,14 @@ describe TrueVault::Model do
 
   describe "update!" do
     it "updates the record" do
-      # a = Patient.create(first_name: "First", last_name: "Last1", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
-      # puts Patient.true_vault_search({last_name: "Last3"}).inspect
-      # a.last_name = "Last3"
-      # a.save
-      puts Patient.true_vault_search({last_name: "Last"}).to_a.inspect
+      Patient.create(first_name: "First", last_name: "Last00100100", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First", last_name: "Last00100200", birth_date: 20.years.ago.to_date, enabled: true, income: 2000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First", last_name: "Last00100300", birth_date: 20.years.ago.to_date, enabled: true, income: 3000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First", last_name: "Last00100400", birth_date: 30.years.ago.to_date, enabled: true, income: 2000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First1", last_name: "Last01000400", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First2", last_name: "Last01000400", birth_date: 30.years.ago.to_date, enabled: true, income: 4000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First3", last_name: "Last01000400", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
+      puts Patient.true_vault_search({last_name: {value: "Last01000*", wildcard: true}, birth_date: {value: [11.years.ago.to_date, 21.years.ago.to_date], range: true}, first_name: %w(First First1)}, {sort: {last_name: :asc, first_name: :desc}}).to_a.map { |p| "#{p.first_name} #{p.last_name} - #{p.birth_date}" }.inspect
     end
   end
   describe "delete!" do

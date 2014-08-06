@@ -82,7 +82,25 @@ module TrueVault
         end
 
         fields.each do |k, v|
-          v.merge!(type: "wildcard") && v.delete(:wildcard) if v.kind_of?(Hash) && v[:wildcard].present?
+          v = { value: v, type: :eq } unless v.kind_of?(Hash)
+          fields[k] = v = v.with_indifferent_access
+
+
+          if v[:wildcard].present?
+            fields[k] = v.merge(type: :wildcard)
+            fields[k].delete(:wildcard)
+          elsif v[:range].present?
+            fields[k] = {
+              type: :range,
+              value: {
+                gte: v[:value][0],
+                lte: v[:value][1]
+              }
+            }
+            fields[k].delete(:range)
+          elsif v[:value].kind_of?(Array) && v[:type] == :eq
+            fields[k] = v.merge(type: :in)
+          end
         end
 
         search_options = {
