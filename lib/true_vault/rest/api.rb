@@ -75,8 +75,8 @@ module TrueVault
                         else
                           {
                             value: v,
-                            case_sensitive: false
-                            type: :eq,
+                            case_sensitive: false,
+                            type: :eq
                           }
                         end
           end
