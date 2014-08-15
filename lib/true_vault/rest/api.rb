@@ -71,11 +71,12 @@ module TrueVault
         if options.delete(:case_insensitive)
           fields.each do |k, v|
             fields[k] = if v.kind_of?(Hash)
-                          v.merge(case_sensitive: false)
+                          v.with_indifferent_access.reverse_merge(case_sensitive: false, type: :eq)
                         else
                           {
                             value: v,
                             case_sensitive: false
+                            type: :eq,
                           }
                         end
           end
