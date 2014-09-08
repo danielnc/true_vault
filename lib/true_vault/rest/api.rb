@@ -125,10 +125,16 @@ module TrueVault
 
           response = {}
           results.each do |result|
-            response.merge!(result){|key, oldval, newval| newval + oldval}
-
-            TrueVault::REST::Response.load(response)
+            response.deep_merge!(result) do |key, oldval, newval|
+              if (newval.kind_of?(Numeric) || newval.kind_of?(Array)) && %w(per_page current_page).index(key).nil?
+                newval + oldval
+              else
+                newval
+              end
+            end
           end
+
+          TrueVault::REST::Response.load(response)
         else
           TrueVault.client.get("", search_option: Base64.strict_encode64(search_options.to_json))
         end
