@@ -111,7 +111,22 @@ module TrueVault
         search_options[:schema_id] = schema_id if schema_id.present?
         search_options.merge!(options) if options.present?
 
-        TrueVault.client.get("", search_option: Base64.strict_encode64(search_options.to_json))
+        # TODO UGLY HACK TO LIMIT THE SIZE OF TRUE VAULT QUERY... REMOVE THIS WHEN TV FIX IT ON THEIR SIDE
+        if ((search_options[:filter][:id] || {})[:value] || []).any?
+          id_filter = search_options[:filter].delete(:id)
+          cloned_filter = id_filter.clone
+
+          id_filter[:value].each_slice(250).map do |split_ids|
+            cloned_filter[:value] = split_ids
+            search_options[:filter][:id] = cloned_filter
+
+            puts search_options.inspect
+            TrueVault.client.get("", search_option: Base64.strict_encode64(search_options.to_json))
+          end.flatten
+        else
+          puts search_options.inspect
+          TrueVault.client.get("", search_option: Base64.strict_encode64(search_options.to_json))
+        end
       end
     end
   end
