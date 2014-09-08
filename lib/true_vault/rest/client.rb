@@ -96,6 +96,8 @@ module TrueVault
         if params == :do_not_force_load
           params = {}
           do_not_force_load = true
+        else
+          do_not_force_load = params.delete(:do_not_force_load)
         end
         body = connection.send(method.to_sym, "/#{api_version}/vaults/#{vault_id}/#{path}", params).env.body
         # do not response load

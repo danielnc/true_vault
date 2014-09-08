@@ -12,18 +12,9 @@ module TrueVault
 
     def results
       @results ||= begin
-        # TODO UGLY HACK TO LIMIT THE SIZE OF TRUE VAULT QUERY... REMOVE THIS WHEN TV FIX IT ON THEIR SIDE
-        if response.kind_of?(Array)
-          response.map do |response|
-            response.data.documents.map do |document_id|
-              klazz.find_by_true_vault_document_id(document_id)
-            end.compact
-          end.flatten.compact
-        else
-          response.data.documents.map do |document_id|
-            klazz.find_by_true_vault_document_id(document_id)
-          end.compact
-        end
+        response.data.documents.map do |document_id|
+          klazz.find_by_true_vault_document_id(document_id)
+        end.compact
       end
     end
 
