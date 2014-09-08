@@ -37,13 +37,14 @@ describe TrueVault::Model do
     end
   end
   describe "IN" do
-    Patient.create(first_name: "First", last_name: "Last00100100", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
-    Patient.create(first_name: "First", last_name: "Last00100200", birth_date: 20.years.ago.to_date, enabled: true, income: 2000, latitude: 123456.789, longitude: 987654.321)
-    Patient.create(first_name: "First", last_name: "Last00100300", birth_date: 20.years.ago.to_date, enabled: true, income: 3000, latitude: 123456.789, longitude: 987654.321)
-    Patient.create(first_name: "First", last_name: "Last00100400", birth_date: 30.years.ago.to_date, enabled: true, income: 2000, latitude: 123456.789, longitude: 987654.321)
-    Patient.create(first_name: "First1", last_name: "Last01000400", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
-    Patient.create(first_name: "First2", last_name: "Last01000400", birth_date: 30.years.ago.to_date, enabled: true, income: 4000, latitude: 123456.789, longitude: 987654.321)
-    Patient.create(first_name: "First3", last_name: "Last01000400", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First", last_name: "Last00100100", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First", last_name: "Last00100200", birth_date: 20.years.ago.to_date, enabled: true, income: 2000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First", last_name: "Last00100300", birth_date: 20.years.ago.to_date, enabled: true, income: 3000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First", last_name: "Last00100400", birth_date: 30.years.ago.to_date, enabled: true, income: 2000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First1", last_name: "Last01000400", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First2", last_name: "Last01000400", birth_date: 30.years.ago.to_date, enabled: true, income: 4000, latitude: 123456.789, longitude: 987654.321)
+      Patient.create(first_name: "First3", last_name: "Last01000400", birth_date: 10.years.ago.to_date, enabled: true, income: 1000, latitude: 123456.789, longitude: 987654.321)
+    puts Patient.true_vault_search(id: Patient.pluck(:id)).inspect
     puts Patient.true_vault_search(id: Patient.pluck(:id)).to_a.map { |p| "#{p.first_name} #{p.last_name} - #{p.birth_date}" }.inspect
   end
   describe "delete!" do

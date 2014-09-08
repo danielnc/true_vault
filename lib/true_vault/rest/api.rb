@@ -125,7 +125,7 @@ module TrueVault
 
           response = {}
           results.each do |result|
-            response.deep_merge!(result) do |key, oldval, newval|
+            self.hash_deep_merge!(response, result) do |key, oldval, newval|
               if (newval.kind_of?(Numeric) || newval.kind_of?(Array)) && %w(per_page current_page).index(key).nil?
                 newval + oldval
               else
@@ -138,6 +138,24 @@ module TrueVault
         else
           TrueVault.client.get("", search_option: Base64.strict_encode64(search_options.to_json))
         end
+      end
+
+      # There is a bug in Hash.deep_merge that is not working, this is a re-implementation that works...
+      def self.hash_deep_merge!(first_hash, other_hash, &block)
+        other_hash.each_pair do |current_key, other_value|
+          this_value = first_hash[current_key]
+
+          first_hash[current_key] = if this_value.is_a?(Hash) && other_value.is_a?(Hash)
+            self.hash_deep_merge!(this_value, other_value, &block)
+          else
+            if block_given? && first_hash.key?(current_key)
+              block.call(current_key, this_value, other_value)
+            else
+              other_value
+            end
+          end
+        end
+        first_hash
       end
     end
   end
