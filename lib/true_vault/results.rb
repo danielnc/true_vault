@@ -13,7 +13,7 @@ module TrueVault
     def results
       @results ||= begin
         # UGLY HACK REMOVE PLZ PLZ PLZ PLZ
-        response.data.documents[0..(per_page - 1).map do |document_id|
+        response.data.documents[0..(per_page - 1)].map do |document_id|
           klazz.find_by_true_vault_document_id(document_id)
         end.compact
       end
