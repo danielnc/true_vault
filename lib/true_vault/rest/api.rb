@@ -120,11 +120,9 @@ module TrueVault
             cloned_filter[:value] = split_ids
             search_options[:filter][:id] = cloned_filter
 
-            puts search_options.inspect
             TrueVault.client.get("", search_option: Base64.strict_encode64(search_options.to_json))
           end.flatten
         else
-          puts search_options.inspect
           TrueVault.client.get("", search_option: Base64.strict_encode64(search_options.to_json))
         end
       end
