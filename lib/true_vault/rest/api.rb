@@ -112,7 +112,6 @@ module TrueVault
         search_options.merge!(options) if options.present?
 
         # TODO UGLY HACK TO LIMIT THE SIZE OF TRUE VAULT QUERY... REMOVE THIS WHEN TV FIX IT ON THEIR SIDE
-        # SEARCH FOR: UGLY HACK TO FIND WHERE ELSE TO REMOVE
         if ((search_options[:filter][:id] || {})[:value] || []).any?
           id_filter = search_options[:filter].delete(:id)
           cloned_filter = id_filter.clone
