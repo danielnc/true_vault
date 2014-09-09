@@ -111,33 +111,7 @@ module TrueVault
         search_options[:schema_id] = schema_id if schema_id.present?
         search_options.merge!(options) if options.present?
 
-        # TODO UGLY HACK TO LIMIT THE SIZE OF TRUE VAULT QUERY... REMOVE THIS WHEN TV FIX IT ON THEIR SIDE
-        if ((search_options[:filter][:id] || {})[:value] || []).any?
-          id_filter = search_options[:filter].delete(:id)
-          cloned_filter = id_filter.clone
-
-          results = id_filter[:value].each_slice(250).map do |split_ids|
-            cloned_filter[:value] = split_ids
-            search_options[:filter][:id] = cloned_filter
-
-            TrueVault.client.get("", search_option: Base64.strict_encode64(search_options.to_json), do_not_force_load: true)
-          end
-
-          response = {}
-          results.each do |result|
-            self.hash_deep_merge!(response, result) do |key, oldval, newval|
-              if (newval.kind_of?(Numeric) || newval.kind_of?(Array)) && %w(per_page current_page).index(key).nil?
-                newval + oldval
-              else
-                newval
-              end
-            end
-          end
-
-          TrueVault::REST::Response.load(response)
-        else
-          TrueVault.client.get("", search_option: Base64.strict_encode64(search_options.to_json))
-        end
+        TrueVault.client.post("", search_option: Base64.strict_encode64(search_options.to_json))
       end
 
       # There is a bug in Hash.deep_merge that is not working, this is a re-implementation that works...
