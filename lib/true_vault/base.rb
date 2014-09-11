@@ -43,9 +43,17 @@ module TrueVault
 
         def true_vault_reindex(force=false)
           if self.destroyed?
-            self.remove_true_vault_document
+            if self.respond_to?(:delay)
+              self.delay.remove_true_vault_document
+            else
+              self.remove_true_vault_document
+            end
           else
-            self.store_true_vault_document(force)
+            if self.respond_to?(:delay)
+              self.delay.store_true_vault_document(force)
+            else
+              self.store_true_vault_document(force)
+            end
           end
         end
 
