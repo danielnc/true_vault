@@ -7,9 +7,9 @@ require "true_vault/base"
 module TrueVault
   def self.client
     @client ||= REST::Client.new do |client|
-      client.api_key = ENV["TRUE_VAULT_API_KEY"] || "ac834878-40ee-4601-bf3a-2b4f1bba17e2"
+      client.api_key = ENV["TRUE_VAULT_API_KEY"]
       client.api_version = ENV["TRUE_VAULT_API_VERSION"] || "v1"
-      client.vault_id = ENV["TRUE_VAULT_VAULT_ID"] || "235c5d99-a067-4dc4-987b-46abbe086717"
+      client.vault_id = ENV["TRUE_VAULT_VAULT_ID"]
     end
   end
 
