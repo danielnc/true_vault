@@ -44,13 +44,15 @@ module TrueVault
         def true_vault_reindex(force=false)
           if self.destroyed?
             if self.respond_to?(:delay)
-              self.delay(to: :true_vault_update).remove_true_vault_document
+              # It's called zzzzz_ to be the last queue in resque and give time for other jobs to be processed
+              self.delay(to: :zzzzz_true_vault_update).remove_true_vault_document
             else
               self.remove_true_vault_document
             end
           else
             if self.respond_to?(:delay)
-              self.delay(to: :true_vault_update).store_true_vault_document(force)
+              # It's called zzzzz_ to be the last queue in resque and give time for other jobs to be processed
+              self.delay(to: :zzzzz_true_vault_update).store_true_vault_document(force)
             else
               self.store_true_vault_document(force)
             end
